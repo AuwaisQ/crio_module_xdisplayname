@@ -13,10 +13,11 @@ function App() {
   });
 
   const validateField = (name, value) => {
-    if (!value.trim()) {
+    const trimmedValue = value.trim();
+    if (!trimmedValue) {
       return `${name} is required`;
     }
-    if (value.trim().length < 2) {
+    if (trimmedValue.length < 2) {
       return `${name} must be at least 2 characters`;
     }
     return '';
@@ -29,7 +30,8 @@ function App() {
       [name]: value
     }));
 
-    const error = validateField(name === 'firstName' ? 'First Name' : 'Last Name', value);
+    const fieldName = name === 'firstName' ? 'First Name' : 'Last Name';
+    const error = validateField(fieldName, value);
     setErrors(prevErrors => ({
       ...prevErrors,
       [name]: error
@@ -51,9 +53,13 @@ function App() {
       return;
     }
 
-    const fullName = `${formData.firstName} ${formData.lastName}`;
+    const fullName = `${formData.firstName.trim()} ${formData.lastName.trim()}`;
     alert(`Full Name: ${fullName}`);
   };
+
+  const firstNameError = validateField('First Name', formData.firstName);
+  const lastNameError = validateField('Last Name', formData.lastName);
+  const isFormValid = firstNameError === '' && lastNameError === '';
 
   return (
     <div className="App">
@@ -61,9 +67,9 @@ function App() {
       <form className="form" onSubmit={submitHandler}>
         <label>
           First Name:
-          <input 
-            type="text" 
-            name="firstName" 
+          <input
+            type="text"
+            name="firstName"
             value={formData.firstName}
             onChange={changeHandler}
           />
@@ -71,15 +77,17 @@ function App() {
         </label>
         <label>
           Last Name:
-          <input 
-            type="text" 
-            name="lastName" 
+          <input
+            type="text"
+            name="lastName"
             value={formData.lastName}
             onChange={changeHandler}
           />
           {errors.lastName && <span className="error">{errors.lastName}</span>}
         </label>
-        <input type="submit" value="Submit" />
+        <button type="submit" disabled={!isFormValid}>
+          Submit
+        </button>
       </form>
 
       <h3>Full Name: {formData.firstName} {formData.lastName}</h3>
