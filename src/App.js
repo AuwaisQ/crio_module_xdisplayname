@@ -83,8 +83,9 @@ function App() {
         </label>
         <button type="submit">Submit</button>
       </form>
-
-      <h3>Full Name: {formData.firstName} {formData.lastName}</h3>
+      {!(errors.firstName || errors.lastName) && (
+        <h3>Full Name: {formData.firstName} {formData.lastName}</h3>
+      )}
     </div>
   );
 }
