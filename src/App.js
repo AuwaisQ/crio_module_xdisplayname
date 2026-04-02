@@ -13,10 +13,10 @@ function App() {
   });
 
   const validateField = (name, value) => {
-    if (!value) {
+    if (!value.trim()) {
       return `${name} is required`;
     }
-    if (value.length < 2) {
+    if (value.trim().length < 2) {
       return `${name} must be at least 2 characters`;
     }
     return '';
@@ -29,7 +29,7 @@ function App() {
       [name]: value
     }));
 
-    const error = validateField(name, value);
+    const error = validateField(name === 'firstName' ? 'First Name' : 'Last Name', value);
     setErrors(prevErrors => ({
       ...prevErrors,
       [name]: error
@@ -39,7 +39,6 @@ function App() {
   const submitHandler = (event) => {
     event.preventDefault();
 
-    // Validate all fields
     const firstNameError = validateField('First Name', formData.firstName);
     const lastNameError = validateField('Last Name', formData.lastName);
     
@@ -49,15 +48,12 @@ function App() {
     });
 
     if (firstNameError || lastNameError) {
-      alert('Please fix the errors before submitting');
       return;
     }
 
     const fullName = `${formData.firstName} ${formData.lastName}`;
     alert(`Full Name: ${fullName}`);
   };
-
-  const isFormValid = !errors.firstName && !errors.lastName && formData.firstName && formData.lastName;
 
   return (
     <div className="App">
@@ -83,7 +79,7 @@ function App() {
           />
           {errors.lastName && <span className="error">{errors.lastName}</span>}
         </label>
-        <button type="submit" disabled={!isFormValid}>Submit</button>
+        <input type="submit" value="Submit" />
       </form>
 
       <h3>Full Name: {formData.firstName} {formData.lastName}</h3>
