@@ -57,13 +57,9 @@ function App() {
     alert(`Full Name: ${fullName}`);
   };
 
-  const firstNameError = validateField('First Name', formData.firstName);
-  const lastNameError = validateField('Last Name', formData.lastName);
-  const isFormValid = firstNameError === '' && lastNameError === '';
-
   return (
     <div className="App">
-      <h1>Full Display Name!</h1>
+      <h1>Full Name Display</h1>
       <form className="form" onSubmit={submitHandler}>
         <label>
           First Name:
@@ -85,9 +81,7 @@ function App() {
           />
           {errors.lastName && <span className="error">{errors.lastName}</span>}
         </label>
-        <button type="submit" disabled={!isFormValid}>
-          Submit
-        </button>
+        <button type="submit">Submit</button>
       </form>
 
       <h3>Full Name: {formData.firstName} {formData.lastName}</h3>
